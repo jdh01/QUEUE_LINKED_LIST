@@ -13,72 +13,59 @@ Node* CreateNode(int x)
 	return temp;
 }
 
-bool IsEmpty(Node* Q)
-{
-	if (Q == NULL) return true;
-	else {
-		return false;
-	}
-}
-
-void Enqueue(Node** Q, int x)
+void Enqueue(Node** F, Node** R, int x)
 {
 	Node* temp = CreateNode(x);
-	Node* temp1 = new Node;
-	temp1->link = *Q;
-	temp1->data = NULL;
-	if (IsEmpty(*Q)) {
-		*Q = temp;
+	if (*F == NULL && *R == NULL) {
+		*F = *R = temp;
+		return;
+	}
+	(*R)->link = temp;
+	(*R) = temp;
+}
+
+void Dequeue(Node** F, Node** R)
+{
+	Node* temp = *F;
+	if (*F == NULL) return;
+	if (*F == *R) {
+		*F = *R = NULL;
 	}
 	else {
-		while (temp1->link != NULL) {
-			temp1 = temp1->link;
-		}
-		temp1->link = temp;
-		temp->link = NULL;
+		*F = (*F)->link;
+	}
+	delete(temp);
+}
+
+int Top(Node* F, Node* R)
+{
+	if (F == NULL && R == NULL) return 0;
+	else {
+		return F->data;
 	}
 }
 
-void Dequeue(Node** Q)
+void Print(Node* F, Node* R)
 {
-	Node* temp;
-	if (IsEmpty(*Q)) return;
+	if (F == NULL && R == NULL) return;
 	else {
-		temp = (*Q)->link;
-		delete(*Q);
-		*Q = temp;
-	}
-}
-
-int Top(Node* Q)
-{
-	if (IsEmpty(Q)) return 0;
-	else {
-		return Q->data;
-	}
-}
-
-void Print(Node* Q)
-{
-	if (IsEmpty(Q)) return;
-	else {
-		while (Q != NULL) {
-			std::cout << Q->data << " ";
-			Q = Q->link;
+		while (F != R->link) {
+			std::cout << F->data << " ";
+			F = F->link;
 		}
 	}
 }
 
 int main() {
-	Node* Q = NULL;
-	Enqueue(&Q, 1);
-	Enqueue(&Q, 2);
-	Enqueue(&Q, 3);
-	Enqueue(&Q, 4);
-	Enqueue(&Q, 5);
-	Print(Q);
+	Node* F = NULL;
+	Node* R = NULL;
+	Enqueue(&F, &R, 1);
+	Enqueue(&F, &R, 2);
+	Enqueue(&F, &R, 3);
+	Enqueue(&F, &R, 4);
+	Enqueue(&F, &R, 5);
+	Print(F, R);
 	std::cout << "\n";
-	Top(Q);
-	Dequeue(&Q);
-	Print(Q);
+	Dequeue(&F, &R);
+	Print(F, R);
 }
