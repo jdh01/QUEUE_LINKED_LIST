@@ -24,15 +24,17 @@ bool IsEmpty(Node* Q)
 void Enqueue(Node** Q, int x)
 {
 	Node* temp = CreateNode(x);
+	Node* temp1 = new Node;
+	temp1->link = *Q;
+	temp1->data = NULL;
 	if (IsEmpty(*Q)) {
-		temp->link = *Q;
 		*Q = temp;
 	}
 	else {
-		while ((*Q)->link != NULL) {
-			*Q = (*Q)->link;
+		while (temp1->link != NULL) {
+			temp1 = temp1->link;
 		}
-		(*Q)->link = temp;
+		temp1->link = temp;
 		temp->link = NULL;
 	}
 }
@@ -60,7 +62,7 @@ void Print(Node* Q)
 {
 	if (IsEmpty(Q)) return;
 	else {
-		while (Q->link != NULL) {
+		while (Q != NULL) {
 			std::cout << Q->data << " ";
 			Q = Q->link;
 		}
@@ -75,6 +77,7 @@ int main() {
 	Enqueue(&Q, 4);
 	Enqueue(&Q, 5);
 	Print(Q);
+	std::cout << "\n";
 	Top(Q);
 	Dequeue(&Q);
 	Print(Q);
